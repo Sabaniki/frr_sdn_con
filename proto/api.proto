@@ -1,0 +1,48 @@
+syntax = "proto3";
+package api;
+option go_package = "./";
+
+
+service ShowBgpIpv6SummaryService {
+    rpc ShowBgpIpv6Summary (ShowBgpIpv6SummaryRequest) returns (ShowBgpIpv6SummaryResult);
+}
+
+message ShowBgpIpv6SummaryRequest {
+}
+
+message ShowBgpIpv6SummaryResult {
+    string routerId = 1;
+    int32 as = 2;
+    int32 vrfId = 3;
+    string vrfName = 4;
+    int32 tableVersion = 5;
+    int32 ribCount = 6;
+    int32 ribMemory = 7;
+    int32  peerCount = 8;
+    int32  peerMemory = 9;
+    int32  peerGroupCount = 10;
+    int32  peerGroupMemory = 11;
+    map<string, BgpIpv6SummaryPeerInfo> peers = 12;
+}  
+
+message BgpIpv6SummaryPeerInfo {
+    int32 remoteAs = 1;
+    int32 localAs = 2;
+    int32 version = 3;
+    int32 msgRcvd = 4;
+    int32 msgSent = 5;
+    int32 tableVersion = 6;
+    int32 outq = 7;
+    int32 inq = 8;
+    string peerUptime = 9;
+    int32 peerUptimeMsec = 10;
+    int32 peerUptimeEstablishedEpoch = 11;
+    int32 pfxRcd = 12;
+    int32 pfxSnt = 13;
+    string state = 14;
+    string peerState = 15;
+    int32 connectionsEstablished = 16;
+    int32 connectionsDropped = 17;
+    string desc = 18;
+    string idType = 19;
+}
