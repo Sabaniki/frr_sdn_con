@@ -1,90 +1,100 @@
 package main
 
 import (
-	"context"
+	"encoding/json"
 	"fmt"
-	"log"
-	"net"
 
 	pb "github.com/Sabaniki/frr_sdn_con/pb/api"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 func main() {
-	port := 50051
-	listenport, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	res := `
+	{
+
+		  "routerId":"100.100.30.1",
+		  "as":65000,
+		  "vrfId":0,
+		  "vrfName":"default",
+		  "tableVersion":40,
+		  "ribCount":3,
+		  "ribMemory":552,
+		  "peerCount":2,
+		  "peerMemory":1480592,
+		  "peerGroupCount":1,
+		  "peerGroupMemory":64,
+		  "peers":{
+			"2001:200:e00:b0:4690:0:100:2":{
+			  "hostname":"bb02-blue.fujisawa.vsix.wide.ad.jp",
+			  "remoteAs":4690,
+			  "localAs":65000,
+			  "version":4,
+			  "msgRcvd":54831,
+			  "msgSent":54822,
+			  "tableVersion":0,
+			  "outq":0,
+			  "inq":0,
+			  "peerUptime":"04w1d21h",
+			  "peerUptimeMsec":2584036000,
+			  "peerUptimeEstablishedEpoch":1638307255,
+			  "pfxRcd":2,
+			  "pfxSnt":0,
+			  "state":"Established",
+			  "peerState":"OK",
+			  "connectionsEstablished":8,
+			  "connectionsDropped":7,
+			  "desc":"ve1602.bb02-blue.fujisawa.vsix.wide.ad.jp",
+			  "idType":"ipv6"
+			},
+			"2001:200:e00:b0:4690:0:100:3":{
+			  "hostname":"bb02-green.fujisawa.vsix.wide.ad.jp",
+			  "remoteAs":4690,
+			  "localAs":65000,
+			  "version":4,
+			  "msgRcvd":30939,
+			  "msgSent":30573,
+			  "tableVersion":0,
+			  "outq":0,
+			  "inq":0,
+			  "peerUptime":"01w4d13h",
+			  "peerUptimeMsec":997811000,
+			  "peerUptimeEstablishedEpoch":1639893480,
+			  "pfxRcd":2,
+			  "pfxSnt":0,
+			  "state":"Established",
+			  "peerState":"OK",
+			  "connectionsEstablished":412,
+			  "connectionsDropped":411,
+			  "desc":"ve1602.bb02-green.fujisawa.vsix.wide.ad.jp",
+			  "idType":"ipv6"
+			}
+		  },
+		  "failedPeers":0,
+		  "displayedPeers":2,
+		  "totalPeers":2,
+		  "dynamicPeers":0,
+		  "bestPath":{
+			"multiPathRelax":"false"
+		  }
+		}`
+	var obj pb.ShowBgpIpv6SummaryResult
+	err := json.Unmarshal([]byte(res), &obj)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		fmt.Println(err)
+		return
 	}
+	println(obj.Peers["2001:200:e00:b0:4690:0:100:3"].PeerState)
 
-	// gRPCサーバーの生成
-	server := grpc.NewServer()
-	rt := Router{}
-	pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
+	// port := 50051
+	// listenport, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	// if err != nil {
+	// 	log.Fatalf("failed to listen: %v", err)
+	// }
 
-	reflection.Register(server)
-	server.Serve(listenport)
-}
+	// // gRPCサーバーの生成
+	// server := grpc.NewServer()
+	// rt := router.Router{}
+	// pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
 
-type Router struct{}
-
-func (self *Router) ShowBgpIpv6Summary(ctx context.Context, req *pb.ShowBgpIpv6SummaryRequest) (*pb.ShowBgpIpv6SummaryResult, error) {
-	return &pb.ShowBgpIpv6SummaryResult{
-		RouterId:        "1.1.1.1",
-		As:              65000,
-		VrfId:           1,
-		VrfName:         "default",
-		TableVersion:    9118504,
-		RibCount:        123456,
-		RibMemory:       48170280,
-		PeerCount:       10,
-		PeerMemory:      1234322,
-		PeerGroupCount:  3,
-		PeerGroupMemory: 192,
-		Peers: map[string]*pb.BgpIpv6SummaryPeerInfo{
-			"2001:db8:1000:1000::1": {
-				RemoteAs:                   64600,
-				LocalAs:                    64601,
-				Version:                    4,
-				MsgRcvd:                    211234,
-				MsgSent:                    9999,
-				TableVersion:               0,
-				Outq:                       0,
-				Inq:                        0,
-				PeerUptime:                 "3d10h20m",
-				PeerUptimeMsec:             123456,
-				PeerUptimeEstablishedEpoch: 123,
-				PfxRcd:                     123,
-				PfxSnt:                     321,
-				State:                      "Established",
-				PeerState:                  "OK",
-				ConnectionsEstablished:     5,
-				ConnectionsDropped:         2,
-				Desc:                       "lo0.hoge.fuga.vsix.wide.ad.jp",
-				IdType:                     "ipv6",
-			},
-			"2001:db8:1000:2000::1": {
-				RemoteAs:                   64800,
-				LocalAs:                    64801,
-				Version:                    4,
-				MsgRcvd:                    9823479,
-				MsgSent:                    734832,
-				TableVersion:               0,
-				Outq:                       0,
-				Inq:                        0,
-				PeerUptime:                 "6d11h40m",
-				PeerUptimeMsec:             123456,
-				PeerUptimeEstablishedEpoch: 1234,
-				PfxRcd:                     1232,
-				PfxSnt:                     3211,
-				State:                      "Established",
-				PeerState:                  "OK",
-				ConnectionsEstablished:     5,
-				ConnectionsDropped:         2,
-				Desc:                       "lo0.foo.bar.vsix.wide.ad.jp",
-				IdType:                     "ipv6",
-			},
-		},
-	}, nil
+	// reflection.Register(server)
+	// server.Serve(listenport)
 }
