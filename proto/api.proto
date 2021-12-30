@@ -35,8 +35,8 @@ message BgpIpv6SummaryPeerInfo {
     int32 outq = 7;
     int32 inq = 8;
     string peerUptime = 9;
-    int32 peerUptimeMsec = 10;
-    int32 peerUptimeEstablishedEpoch = 11;
+    uint32 peerUptimeMsec = 10;
+    uint32 peerUptimeEstablishedEpoch = 11;
     int32 pfxRcd = 12;
     int32 pfxSnt = 13;
     string state = 14;
