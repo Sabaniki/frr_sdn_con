@@ -12,7 +12,6 @@ import (
 type Router struct{}
 
 func (r *Router) ShowBgpIpv6Summary(ctx context.Context, req *pb.ShowBgpIpv6SummaryRequest) (*pb.ShowBgpIpv6SummaryResult, error) {
-	//TODO:  (cd /home/vsix/nfv-kit/ && sudo docker-compose exec frr bash -c "vtysh -c 'show bgp ipv6 sum json'") | jq ".ipv6Unicast" を exec
 	res, cmd_err := pipeline.Output(
 		[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c 'show bgp ipv6 sum json'"},
 		[]string{"jq", ".ipv6Unicast"},
