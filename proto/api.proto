@@ -10,6 +10,7 @@ service ShowBgpIpv6SummaryService {
 message ShowBgpIpv6SummaryRequest {
 }
 
+// TODO: int32 → int16 にできる部分も多いはず
 message ShowBgpIpv6SummaryResult {
     string routerId = 1;
     int32 as = 2;
@@ -23,7 +24,7 @@ message ShowBgpIpv6SummaryResult {
     int32  peerGroupCount = 10;
     int32  peerGroupMemory = 11;
     map<string, BgpIpv6SummaryPeerInfo> peers = 12;
-}  
+}
 
 message BgpIpv6SummaryPeerInfo {
     int32 remoteAs = 1;
@@ -45,4 +46,31 @@ message BgpIpv6SummaryPeerInfo {
     int32 connectionsDropped = 17;
     string desc = 18;
     string idType = 19;
+}
+
+service ShowRouteMapService {
+    rpc ShowRouteMap (ShowRouteMapRequest) returns (ShowRouteMapResult);
+}
+
+message ShowRouteMapRequest {
+}
+
+message ShowRouteMapResult {
+    map<string, RouteMapInfo> routeMaps = 1;
+}
+
+message RouteMapInfo {
+    int32 invoked = 1;
+    bool disabledOptimization = 2;
+    bool processedChange = 3;
+    repeated RouteMapRule routeMapRules = 4;
+}
+
+message RouteMapRule {
+    int32 sequenceNumber = 1;
+    string type = 2;
+    uint32 invoked = 3;
+    repeated string matchClauses = 4;
+    repeated string setClauses = 5;
+    string action = 6;
 }
