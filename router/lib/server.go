@@ -46,7 +46,7 @@ func (r *Router) ShowBgpIpv6Summary(ctx context.Context, req *pb.ShowBgpIpv6Summ
 	return &obj, err
 }
 
-func (r *Router) ShowRouteMap(ctx context.Context, req *pb.ShowRouteMapRequest) (*pb.ShowRouteMapRequest, error) {
+func (r *Router) ShowRouteMap(ctx context.Context, req *pb.ShowRouteMapRequest) (*pb.ShowRouteMapResult, error) {
 	// res, cmd_err := pipeline.Output(
 	// 	[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c 'show bgp ipv6 sum json'"},
 	// 	[]string{"jq", ".ipv6Unicast"},
@@ -60,7 +60,7 @@ func (r *Router) ShowRouteMap(ctx context.Context, req *pb.ShowRouteMapRequest) 
 	// if json_err != nil {
 	// 	fmt.Println(json_err)
 	// }
-	var obj pb.ShowRouteMapRequest
+	var obj pb.ShowRouteMapResult
 	err := execCommand("show route-map json", ".BGP", &obj)
 	return &obj, err
 }

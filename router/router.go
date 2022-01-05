@@ -13,11 +13,12 @@ func execCommand(vtyshArg string, jqArg string, obj interface{}) error {
 		[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c '" + vtyshArg + " json'"},
 		[]string{"jq", jqArg},
 		[]string{"jq", "select(type != \"null\")"},
+		[]string{"jq", "{routeMaps: .}"},
 	)
 	if cmd_err != nil {
 		fmt.Println(cmd_err)
 	}
-
+	print(string(res))
 	err := json.Unmarshal(res, &obj)
 	if err != nil {
 		fmt.Println(err)
