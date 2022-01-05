@@ -10,7 +10,7 @@ import (
 
 func execCommand(vtyshArg string, jqArg string, obj interface{}) error {
 	res, cmd_err := pipeline.Output(
-		[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c '" + vtyshArg + "'"},
+		[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c '" + vtyshArg + " json'"},
 		[]string{"jq", jqArg},
 		[]string{"jq", "select(type != \"null\")"},
 	)
@@ -27,11 +27,13 @@ func execCommand(vtyshArg string, jqArg string, obj interface{}) error {
 func main() {
 	//TODO:  (cd /home/vsix/nfv-kit/ && sudo docker-compose exec frr bash -c "vtysh -c 'show bgp ipv6 sum json'") | jq ".ipv6Unicast" を exec
 	var obj pb.ShowRouteMapResult
-	err := execCommand("show route-map json", ".BGP", &obj)
+	err := execCommand("show route-map", ".BGP", &obj)
+	// var obj pb.ShowBgpIpv6SummaryResult
+	// err := execCommand("show bgp ipv6 sum", ".ipv6Unicast", &obj)
 	if err != nil {
 		fmt.Println(err)
 	}
-	println(obj.RouteMaps["EXPORT_to_vSIX-BB"].Rules[0].MatchClauses[0])
+	fmt.Println(obj)
 	// port := 50051
 	// listenport, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	// if err != nil {

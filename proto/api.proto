@@ -56,7 +56,7 @@ message ShowRouteMapRequest {
 }
 
 message ShowRouteMapResult {
-    map<string, RouteMapInfo> routeMaps = 1;
+    map<string, RouteMapInfo> BGP = 1;
 }
 
 message RouteMapInfo {
