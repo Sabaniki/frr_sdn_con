@@ -63,7 +63,7 @@ message RouteMapInfo {
     int32 invoked = 1;
     bool disabledOptimization = 2;
     bool processedChange = 3;
-    repeated RouteMapRule routeMapRules = 4;
+    repeated RouteMapRule rules = 4;
 }
 
 message RouteMapRule {
