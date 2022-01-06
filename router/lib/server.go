@@ -36,10 +36,9 @@ func execShowCommand(obj interface{}, vtyshArg string, jqArgs ...string) error {
 
 func execCommand(vtyshArgs ...string) error {
 	for i, vtyshArg := range vtyshArgs {
-		vtyshArgs[i] = " -c '" + vtyshArg + "'"
+		vtyshArgs[i] = "-c '" + vtyshArg + "'"
 	}
-	vtyshArgs[len(vtyshArgs)-1] += "\""
-	commands := append([]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "\"vtysh -c 'conf t'"}, vtyshArgs...)
+	commands := []string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c 'conf t'" + strings.Join(vtyshArgs, " ")}
 
 	fmt.Println(commands)
 	_, err := pipeline.Output(commands)
