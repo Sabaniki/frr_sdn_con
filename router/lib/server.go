@@ -38,7 +38,9 @@ func execCommand(vtyshArgs ...string) error {
 	for i, vtyshArg := range vtyshArgs {
 		vtyshArgs[i] = " -c '" + vtyshArg + "'"
 	}
-	commands := append([]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c 'conf t'"}, vtyshArgs...)
+	vtyshArgs[len(vtyshArgs)-1] += "\""
+	commands := append([]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "\"vtysh -c 'conf t'"}, vtyshArgs...)
+
 	fmt.Println(commands)
 	_, err := pipeline.Output(commands)
 	if err != nil {
