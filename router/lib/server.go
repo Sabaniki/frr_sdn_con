@@ -91,8 +91,8 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 	}
 	var obj pb.SetMedResult
 	err = execCommand(
-		"route-map "+req.RouteMap+" "+req.Type+" "+string(req.SequenceNumber),
-		"set metric "+string(req.Med),
+		"route-map "+req.RouteMap+" "+req.Type+" "+strconv.Itoa(int(req.SequenceNumber)),
+		"set metric "+strconv.Itoa(int(req.Med)),
 	)
 	currentMed, err := getMed(req)
 	if err != nil {
