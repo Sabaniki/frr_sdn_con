@@ -48,8 +48,9 @@ message BgpIpv6SummaryPeerInfo {
     string idType = 19;
 }
 
-service ShowRouteMapService {
+service RouteMapService {
     rpc ShowRouteMap (ShowRouteMapRequest) returns (ShowRouteMapResult);
+    rpc SetMed (SetMedRequest) returns (SetMedResult);
 }
 
 message ShowRouteMapRequest {
@@ -69,4 +70,16 @@ message RouteMapRule {
     repeated string matchClauses = 4;
     repeated string setClauses = 5;
     string action = 6;
+}
+
+message SetMedRequest {
+    string routeMap = 1;
+    int32 sequenceNumber = 2;
+    string type = 3;
+    int32 med = 4;
+}
+
+message SetMedResult {
+    int32 oldMed = 1;
+    int32 currentMed = 2;
 }

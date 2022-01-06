@@ -102,84 +102,120 @@ var ShowBgpIpv6SummaryService_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "proto/api.proto",
 }
 
-// ShowRouteMapServiceClient is the client API for ShowRouteMapService service.
+// RouteMapServiceClient is the client API for RouteMapService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ShowRouteMapServiceClient interface {
+type RouteMapServiceClient interface {
 	ShowRouteMap(ctx context.Context, in *ShowRouteMapRequest, opts ...grpc.CallOption) (*ShowRouteMapResult, error)
+	SetMed(ctx context.Context, in *SetMedRequest, opts ...grpc.CallOption) (*SetMedResult, error)
 }
 
-type showRouteMapServiceClient struct {
+type routeMapServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewShowRouteMapServiceClient(cc grpc.ClientConnInterface) ShowRouteMapServiceClient {
-	return &showRouteMapServiceClient{cc}
+func NewRouteMapServiceClient(cc grpc.ClientConnInterface) RouteMapServiceClient {
+	return &routeMapServiceClient{cc}
 }
 
-func (c *showRouteMapServiceClient) ShowRouteMap(ctx context.Context, in *ShowRouteMapRequest, opts ...grpc.CallOption) (*ShowRouteMapResult, error) {
+func (c *routeMapServiceClient) ShowRouteMap(ctx context.Context, in *ShowRouteMapRequest, opts ...grpc.CallOption) (*ShowRouteMapResult, error) {
 	out := new(ShowRouteMapResult)
-	err := c.cc.Invoke(ctx, "/api.ShowRouteMapService/ShowRouteMap", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.RouteMapService/ShowRouteMap", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ShowRouteMapServiceServer is the server API for ShowRouteMapService service.
-// All implementations should embed UnimplementedShowRouteMapServiceServer
+func (c *routeMapServiceClient) SetMed(ctx context.Context, in *SetMedRequest, opts ...grpc.CallOption) (*SetMedResult, error) {
+	out := new(SetMedResult)
+	err := c.cc.Invoke(ctx, "/api.RouteMapService/SetMed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RouteMapServiceServer is the server API for RouteMapService service.
+// All implementations should embed UnimplementedRouteMapServiceServer
 // for forward compatibility
-type ShowRouteMapServiceServer interface {
+type RouteMapServiceServer interface {
 	ShowRouteMap(context.Context, *ShowRouteMapRequest) (*ShowRouteMapResult, error)
+	SetMed(context.Context, *SetMedRequest) (*SetMedResult, error)
 }
 
-// UnimplementedShowRouteMapServiceServer should be embedded to have forward compatible implementations.
-type UnimplementedShowRouteMapServiceServer struct {
+// UnimplementedRouteMapServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedRouteMapServiceServer struct {
 }
 
-func (UnimplementedShowRouteMapServiceServer) ShowRouteMap(context.Context, *ShowRouteMapRequest) (*ShowRouteMapResult, error) {
+func (UnimplementedRouteMapServiceServer) ShowRouteMap(context.Context, *ShowRouteMapRequest) (*ShowRouteMapResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ShowRouteMap not implemented")
 }
+func (UnimplementedRouteMapServiceServer) SetMed(context.Context, *SetMedRequest) (*SetMedResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMed not implemented")
+}
 
-// UnsafeShowRouteMapServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ShowRouteMapServiceServer will
+// UnsafeRouteMapServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RouteMapServiceServer will
 // result in compilation errors.
-type UnsafeShowRouteMapServiceServer interface {
-	mustEmbedUnimplementedShowRouteMapServiceServer()
+type UnsafeRouteMapServiceServer interface {
+	mustEmbedUnimplementedRouteMapServiceServer()
 }
 
-func RegisterShowRouteMapServiceServer(s grpc.ServiceRegistrar, srv ShowRouteMapServiceServer) {
-	s.RegisterService(&ShowRouteMapService_ServiceDesc, srv)
+func RegisterRouteMapServiceServer(s grpc.ServiceRegistrar, srv RouteMapServiceServer) {
+	s.RegisterService(&RouteMapService_ServiceDesc, srv)
 }
 
-func _ShowRouteMapService_ShowRouteMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _RouteMapService_ShowRouteMap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShowRouteMapRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ShowRouteMapServiceServer).ShowRouteMap(ctx, in)
+		return srv.(RouteMapServiceServer).ShowRouteMap(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.ShowRouteMapService/ShowRouteMap",
+		FullMethod: "/api.RouteMapService/ShowRouteMap",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShowRouteMapServiceServer).ShowRouteMap(ctx, req.(*ShowRouteMapRequest))
+		return srv.(RouteMapServiceServer).ShowRouteMap(ctx, req.(*ShowRouteMapRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ShowRouteMapService_ServiceDesc is the grpc.ServiceDesc for ShowRouteMapService service.
+func _RouteMapService_SetMed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetMedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RouteMapServiceServer).SetMed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.RouteMapService/SetMed",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RouteMapServiceServer).SetMed(ctx, req.(*SetMedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RouteMapService_ServiceDesc is the grpc.ServiceDesc for RouteMapService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ShowRouteMapService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.ShowRouteMapService",
-	HandlerType: (*ShowRouteMapServiceServer)(nil),
+var RouteMapService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.RouteMapService",
+	HandlerType: (*RouteMapServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ShowRouteMap",
-			Handler:    _ShowRouteMapService_ShowRouteMap_Handler,
+			Handler:    _RouteMapService_ShowRouteMap_Handler,
+		},
+		{
+			MethodName: "SetMed",
+			Handler:    _RouteMapService_SetMed_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
