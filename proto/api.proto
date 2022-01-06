@@ -53,19 +53,15 @@ service ShowRouteMapService {
 }
 
 message ShowRouteMapRequest {
+    string name = 1;
 }
 
 message ShowRouteMapResult {
-    map<string, RouteMapInfo> routeMaps = 1;
-}
-
-message RouteMapInfo {
     int32 invoked = 1;
     bool disabledOptimization = 2;
     bool processedChange = 3;
     repeated RouteMapRule rules = 4;
 }
-
 message RouteMapRule {
     int32 sequenceNumber = 1;
     string type = 2;

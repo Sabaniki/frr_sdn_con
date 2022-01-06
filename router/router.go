@@ -1,52 +1,29 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"log"
+	"net"
 
 	pb "github.com/Sabaniki/frr_sdn_con/pb/api"
-	"github.com/mattn/go-pipeline"
+	router "github.com/Sabaniki/frr_sdn_con/router/lib"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
-func execCommand(vtyshArg string, jqArg string, obj interface{}) error {
-	res, cmd_err := pipeline.Output(
-		[]string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c '" + vtyshArg + " json'"},
-		[]string{"jq", jqArg},
-		[]string{"jq", "select(type != \"null\")"},
-		[]string{"jq", "{routeMaps: .}"},
-	)
-	if cmd_err != nil {
-		fmt.Println(cmd_err)
-	}
-	print(string(res))
-	err := json.Unmarshal(res, &obj)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return err
-}
 func main() {
-	//TODO:  (cd /home/vsix/nfv-kit/ && sudo docker-compose exec frr bash -c "vtysh -c 'show bgp ipv6 sum json'") | jq ".ipv6Unicast" を exec
-	var obj pb.ShowRouteMapResult
-	err := execCommand("show route-map", ".BGP", &obj)
-	// var obj pb.ShowBgpIpv6SummaryResult
-	// err := execCommand("show bgp ipv6 sum", ".ipv6Unicast", &obj)
+	port := 50051
+	listenport, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalf("failed to listen: %v", err)
 	}
-	fmt.Println(obj)
-	// port := 50051
-	// listenport, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
-	// if err != nil {
-	// 	log.Fatalf("failed to listen: %v", err)
-	// }
 
-	// // gRPCサーバーの生成
-	// server := grpc.NewServer()
-	// rt := router.Router{}
-	// pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
-	// pb.RegisterShowRouteMapServiceServer(server, &rt)
+	// gRPCサーバーの生成
+	server := grpc.NewServer()
+	rt := router.Router{}
+	pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
+	pb.RegisterShowRouteMapServiceServer(server, &rt)
 
-	// reflection.Register(server)
-	// server.Serve(listenport)
+	reflection.Register(server)
+	server.Serve(listenport)
 }
