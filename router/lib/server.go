@@ -38,8 +38,7 @@ func execCommand(vtyshArgs ...string) error {
 	for i, vtyshArg := range vtyshArgs {
 		vtyshArgs[i] = "-c '" + vtyshArg + "'"
 	}
-	vtyshArgs[len(vtyshArgs)-1] += "\""
-	commands := []string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "\"vtysh -c 'conf t'" + strings.Join(vtyshArgs, " ")}
+	commands := []string{"docker", "exec", "nfv-kit_frr_1", "bash", "-c", "vtysh -c 'conf t' " + strings.Join(vtyshArgs, " ")}
 
 	fmt.Println(commands)
 	_, err := pipeline.Output(commands)
@@ -76,13 +75,15 @@ func getMed(req *pb.SetMedRequest) (int32, error) {
 	var med int64
 	for _, rule := range obj.Rules {
 		if rule.SequenceNumber == req.SequenceNumber {
-			for _, matchClause := range rule.MatchClauses {
-				if strings.Contains(matchClause, "metric") {
-					med, err = toInt64(matchClause)
+			for _, setClause := range rule.SetClauses {
+				if strings.Contains(setClause, "metric") {
+					fmt.Println(setClause)
+					med, err = toInt64(setClause)
 				}
 			}
 		}
 	}
+	println("end get med: " + strconv.Itoa(int(med)))
 	return int32(med), err
 }
 
