@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	controller "github.com/Sabaniki/frr_sdn_con/controller/lib"
+)
 
 func main() {
-	fmt.Println("fuga")
+	controller.SetMed("IMPORT_from_vSIX_BB", 15, "permit", 11)
 }

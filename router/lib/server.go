@@ -90,16 +90,22 @@ func getMed(req *pb.SetMedRequest) (int32, error) {
 func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedResult, error) {
 	oldMed, err := getMed(req)
 	if err != nil {
-		return nil, nil
+		println("error occured!")
+		return nil, err
 	}
 	var obj pb.SetMedResult
 	err = execCommand(
 		"route-map "+req.RouteMap+" "+req.Type+" "+strconv.Itoa(int(req.SequenceNumber)),
 		"set metric "+strconv.Itoa(int(req.Med)),
 	)
+	if err != nil {
+		println("error occured!")
+		return nil, err
+	}
 	currentMed, err := getMed(req)
 	if err != nil {
-		return nil, nil
+		println("error occured!")
+		return nil, err
 	}
 	obj.OldMed = oldMed
 	obj.CurrentMed = currentMed

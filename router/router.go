@@ -18,7 +18,6 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// gRPCサーバーの生成
 	server := grpc.NewServer()
 	rt := router.Router{}
 	pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
