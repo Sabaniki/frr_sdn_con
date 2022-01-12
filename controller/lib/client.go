@@ -74,7 +74,6 @@ func GetRouteMap(routeMap string) {
 
 	fmt.Println(res)
 }
-
 func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32) {
 	address := "[::1]:50051"
 	conn, err := grpc.Dial(
@@ -107,7 +106,6 @@ func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32)
 	res, err := client.SetMed(ctx, &setMedRequest)
 
 	if err != nil {
-		log.Fatal("Request failed.")
 		return
 	}
 
