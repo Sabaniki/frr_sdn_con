@@ -9,10 +9,7 @@ require (
 
 require github.com/google/go-cmp v0.5.6 // indirect
 
-require (
-	github.com/fsnotify/fsnotify v1.5.1 // indirect
-	github.com/google/go-cmp v0.5.6 // indirect
-)
+require github.com/fsnotify/fsnotify v1.5.1 // indirect
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -21,4 +18,5 @@ require (
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/genproto v0.0.0-20211223182754-3ac035c7e7cb // indirect
+	gopkg.in/yaml.v2 v2.4.0
 )

@@ -5,5 +5,8 @@ import (
 )
 
 func main() {
-	controller.SetMed("IMPORT_from_vSIX_BB", 5, "permit", 30)
+	// controller.SetMed("IMPORT_from_vSIX_BB", 5, "permit", 30)
+	go controller.Start()
+	for {
+	}
 }

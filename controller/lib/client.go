@@ -2,7 +2,9 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"time"
 
@@ -74,7 +76,19 @@ func GetRouteMap(routeMap string) {
 
 	fmt.Println(res)
 }
-func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32) {
+
+// func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32) {
+func SetMed(pathToConfig string) {
+	var conf pb.SetMedRequest
+	raw, err := ioutil.ReadFile(pathToConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+	print(string(raw))
+	err = json.Unmarshal(raw, &conf)
+	if err != nil {
+		log.Fatal(err)
+	}
 	address := "[::1]:50051"
 	conn, err := grpc.Dial(
 		address,
@@ -101,9 +115,9 @@ func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32)
 
 	client := pb.NewRouteMapServiceClient(conn)
 
-	setMedRequest := pb.SetMedRequest{RouteMap: routeMap, SequenceNumber: sequenceNumber, Type: permitDeny, Med: med}
+	// setMedRequest := pb.SetMedRequest{RouteMap: routeMap, SequenceNumber: sequenceNumber, Type: permitDeny, Med: med}
 
-	res, err := client.SetMed(ctx, &setMedRequest)
+	res, err := client.SetMed(ctx, &conf)
 
 	if err != nil {
 		return
