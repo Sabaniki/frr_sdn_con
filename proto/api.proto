@@ -109,7 +109,8 @@ message ConfigInterfaceRequest {
 }
 
 message ConfigInterfaceResult {
-    InterfaceInfo res = 1;
+    InterfaceInfo oldConfig = 1;
+    InterfaceInfo currentConfig = 2;
 }
 
 message InterfaceInfo {
