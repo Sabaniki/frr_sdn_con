@@ -115,7 +115,7 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 
 func (r *Router) ShowOneInterface(ctx context.Context, req *pb.ShowOneInterfaceRequest) (*pb.ShowOneInterfaceResult, error) {
 	var obj pb.ShowOneInterfaceResult
-	err := execShowCommand(&obj, "interface", "."+req.GetName())
+	err := execShowCommand(&obj, "interface", "."+req.GetName(), ".evpnMh = \"no\"")
 	println("requested!: ")
 	fmt.Println(&obj)
 	return &obj, err
