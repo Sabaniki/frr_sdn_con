@@ -221,3 +221,159 @@ var RouteMapService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/api.proto",
 }
+
+// InterfaceServiceClient is the client API for InterfaceService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InterfaceServiceClient interface {
+	ShowAllInterface(ctx context.Context, in *ShowAllInterfaceRequest, opts ...grpc.CallOption) (*ShowAllInterfaceResult, error)
+	ShowOneInterface(ctx context.Context, in *ShowOneInterfaceRequest, opts ...grpc.CallOption) (*ShowOneInterfaceResult, error)
+	ConfigInterface(ctx context.Context, in *ConfigInterfaceRequest, opts ...grpc.CallOption) (*ConfigInterfaceResult, error)
+}
+
+type interfaceServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInterfaceServiceClient(cc grpc.ClientConnInterface) InterfaceServiceClient {
+	return &interfaceServiceClient{cc}
+}
+
+func (c *interfaceServiceClient) ShowAllInterface(ctx context.Context, in *ShowAllInterfaceRequest, opts ...grpc.CallOption) (*ShowAllInterfaceResult, error) {
+	out := new(ShowAllInterfaceResult)
+	err := c.cc.Invoke(ctx, "/api.InterfaceService/ShowAllInterface", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceServiceClient) ShowOneInterface(ctx context.Context, in *ShowOneInterfaceRequest, opts ...grpc.CallOption) (*ShowOneInterfaceResult, error) {
+	out := new(ShowOneInterfaceResult)
+	err := c.cc.Invoke(ctx, "/api.InterfaceService/ShowOneInterface", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *interfaceServiceClient) ConfigInterface(ctx context.Context, in *ConfigInterfaceRequest, opts ...grpc.CallOption) (*ConfigInterfaceResult, error) {
+	out := new(ConfigInterfaceResult)
+	err := c.cc.Invoke(ctx, "/api.InterfaceService/ConfigInterface", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InterfaceServiceServer is the server API for InterfaceService service.
+// All implementations should embed UnimplementedInterfaceServiceServer
+// for forward compatibility
+type InterfaceServiceServer interface {
+	ShowAllInterface(context.Context, *ShowAllInterfaceRequest) (*ShowAllInterfaceResult, error)
+	ShowOneInterface(context.Context, *ShowOneInterfaceRequest) (*ShowOneInterfaceResult, error)
+	ConfigInterface(context.Context, *ConfigInterfaceRequest) (*ConfigInterfaceResult, error)
+}
+
+// UnimplementedInterfaceServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedInterfaceServiceServer struct {
+}
+
+func (UnimplementedInterfaceServiceServer) ShowAllInterface(context.Context, *ShowAllInterfaceRequest) (*ShowAllInterfaceResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowAllInterface not implemented")
+}
+func (UnimplementedInterfaceServiceServer) ShowOneInterface(context.Context, *ShowOneInterfaceRequest) (*ShowOneInterfaceResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowOneInterface not implemented")
+}
+func (UnimplementedInterfaceServiceServer) ConfigInterface(context.Context, *ConfigInterfaceRequest) (*ConfigInterfaceResult, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfigInterface not implemented")
+}
+
+// UnsafeInterfaceServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InterfaceServiceServer will
+// result in compilation errors.
+type UnsafeInterfaceServiceServer interface {
+	mustEmbedUnimplementedInterfaceServiceServer()
+}
+
+func RegisterInterfaceServiceServer(s grpc.ServiceRegistrar, srv InterfaceServiceServer) {
+	s.RegisterService(&InterfaceService_ServiceDesc, srv)
+}
+
+func _InterfaceService_ShowAllInterface_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowAllInterfaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServiceServer).ShowAllInterface(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.InterfaceService/ShowAllInterface",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServiceServer).ShowAllInterface(ctx, req.(*ShowAllInterfaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InterfaceService_ShowOneInterface_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowOneInterfaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServiceServer).ShowOneInterface(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.InterfaceService/ShowOneInterface",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServiceServer).ShowOneInterface(ctx, req.(*ShowOneInterfaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InterfaceService_ConfigInterface_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfigInterfaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InterfaceServiceServer).ConfigInterface(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.InterfaceService/ConfigInterface",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InterfaceServiceServer).ConfigInterface(ctx, req.(*ConfigInterfaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// InterfaceService_ServiceDesc is the grpc.ServiceDesc for InterfaceService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var InterfaceService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "api.InterfaceService",
+	HandlerType: (*InterfaceServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ShowAllInterface",
+			Handler:    _InterfaceService_ShowAllInterface_Handler,
+		},
+		{
+			MethodName: "ShowOneInterface",
+			Handler:    _InterfaceService_ShowOneInterface_Handler,
+		},
+		{
+			MethodName: "ConfigInterface",
+			Handler:    _InterfaceService_ConfigInterface_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/api.proto",
+}

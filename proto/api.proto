@@ -83,3 +83,60 @@ message SetMedResult {
     int32 oldMed = 1;
     int32 currentMed = 2;
 }
+
+service InterfaceService {
+    rpc ShowAllInterface (ShowAllInterfaceRequest) returns (ShowAllInterfaceResult);
+    rpc ShowOneInterface (ShowOneInterfaceRequest) returns (ShowOneInterfaceResult);
+    rpc ConfigInterface (ConfigInterfaceRequest) returns (ConfigInterfaceResult);
+}
+
+message ShowAllInterfaceRequest {}
+
+message ShowAllInterfaceResult {
+
+}
+
+message ShowOneInterfaceRequest {
+    string name = 1;
+}
+
+message ShowOneInterfaceResult {
+    InterfaceInfo res = 1;
+}
+
+message ConfigInterfaceRequest {
+    InterfaceInfo req = 1;
+}
+
+message ConfigInterfaceResult {
+    InterfaceInfo res = 1;
+}
+
+message InterfaceInfo {
+    string administrativeStatus = 1;
+    string operationalStatus = 2;
+    bool linkDetection = 3;
+    int32 linkUps = 4;
+    int32 linkDowns = 5;
+    string vrfName = 6;
+    bool pseudoInterface = 7;
+    int32 index = 8;
+    int32 metric = 9;
+    int32 mtu = 10;
+    int32 speed = 11;
+    string flags = 12;
+    string type = 13;
+    string hardwareAddress = 14;
+    repeated InterfaceAddr ipAddresses = 15;
+    string interfaceType = 16;
+    string interfaceSlaveType = 17;
+    bool lacpBypass = 18;
+    bytes evpnMh = 19;  // わからないのでとりあえず bytes に
+    string protodown = 20;
+}
+
+message InterfaceAddr {
+    string address = 1;
+    bool secondary = 2;
+    bool unnumbered = 3;
+}

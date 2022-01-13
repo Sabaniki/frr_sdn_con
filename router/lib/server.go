@@ -111,3 +111,9 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 	obj.CurrentMed = currentMed
 	return &obj, err
 }
+
+func (r *Router) ShowOneInterface(ctx context.Context, req *pb.ShowOneInterfaceRequest) (*pb.ShowOneInterfaceResult, error) {
+	var obj pb.ShowOneInterfaceResult
+	err := execShowCommand(&obj, "interface", "."+req.GetName())
+	return &obj, err
+}

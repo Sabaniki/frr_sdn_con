@@ -9,7 +9,7 @@ require (
 
 require github.com/google/go-cmp v0.5.6 // indirect
 
-require github.com/fsnotify/fsnotify v1.5.1 // indirect
+require github.com/fsnotify/fsnotify v1.5.1
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
