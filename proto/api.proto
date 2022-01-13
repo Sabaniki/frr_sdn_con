@@ -93,7 +93,7 @@ service InterfaceService {
 message ShowAllInterfaceRequest {}
 
 message ShowAllInterfaceResult {
-
+    map<string, InterfaceInfo> interfaces = 1;
 }
 
 message ShowOneInterfaceRequest {
@@ -101,7 +101,7 @@ message ShowOneInterfaceRequest {
 }
 
 message ShowOneInterfaceResult {
-    InterfaceInfo res = 1;
+    InterfaceInfo interface = 1;
 }
 
 message ConfigInterfaceRequest {
@@ -131,7 +131,7 @@ message InterfaceInfo {
     string interfaceType = 16;
     string interfaceSlaveType = 17;
     bool lacpBypass = 18;
-    string evpnMh = 19;  // わからないのでとりあえず bytes に
+    string evpnMh = 19;  // 構造がわからないので力でごまかした
     string protodown = 20;
 }
 

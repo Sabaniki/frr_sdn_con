@@ -115,14 +115,15 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 
 func (r *Router) ShowOneInterface(ctx context.Context, req *pb.ShowOneInterfaceRequest) (*pb.ShowOneInterfaceResult, error) {
 	var obj pb.InterfaceInfo
-	err := execShowCommand(&obj, "interface", "."+req.GetName(), ".evpnMh = \"no\"")
-	res := pb.ShowOneInterfaceResult{Res: &obj}
+	err := execShowCommand(&obj, "interface "+req.GetName(), "."+req.GetName(), ".evpnMh = \"no\"")
+	res := pb.ShowOneInterfaceResult{Interface: &obj}
 	return &res, err
 }
 
 func (r *Router) ShowAllInterface(ctx context.Context, req *pb.ShowAllInterfaceRequest) (*pb.ShowAllInterfaceResult, error) {
-	// TODO: impl
-	return nil, nil
+	var obj pb.ShowAllInterfaceResult
+	err := execShowCommand(&obj, "interface", "{interfaces: .}", ".interfaces[].evpnMh = \"no\"")
+	return &obj, err
 }
 
 func (r *Router) ConfigInterface(ctx context.Context, req *pb.ConfigInterfaceRequest) (*pb.ConfigInterfaceResult, error) {
