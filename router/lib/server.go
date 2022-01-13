@@ -133,11 +133,23 @@ func (r *Router) ConfigInterface(ctx context.Context, req *pb.ConfigInterfaceReq
 		println("error occurred!")
 		return nil, err
 	}
-	for _, addr := range req.GetConfig().IpAddresses {
+	for _, addr := range old.GetIpAddresses() {
+		if !regexp.MustCompile(`fe..:.*`).Match([]byte(addr.GetAddress())) {
+			err = execCommand(
+				"interface  "+" "+req.GetName(),
+				"no ipv6 address "+addr.GetAddress(),
+			)
+		}
+	}
+	for _, addr := range req.GetConfig().GetIpAddresses() {
 		err = execCommand(
 			"interface  "+" "+req.GetName(),
 			"ipv6 address "+addr.GetAddress(),
 		)
+	}
+	if err != nil {
+		println("error occurred!")
+		return nil, err
 	}
 
 	var current pb.InterfaceInfo

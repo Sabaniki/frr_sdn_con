@@ -28,8 +28,11 @@ func Start() {
 					log.Println("modified file:", event.Name)
 					if regexp.MustCompile(`.*\/metric\.json$`).Match([]byte(event.Name)) {
 						SetMed(event.Name)
+					} else if regexp.MustCompile(`.*\/interface\.json$`).Match([]byte(event.Name)) {
+						ConfigInterface(event.Name)
 					} else {
 						log.Println("other!")
+						ConfigInterface(event.Name)
 					}
 				}
 			case err, ok := <-watcher.Errors:

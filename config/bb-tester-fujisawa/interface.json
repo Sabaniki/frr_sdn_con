@@ -1,0 +1,10 @@
+{
+	"name": "vlan1602",
+	"config": {
+		"ipAddresses": [
+			{
+				"address": "2001:200:e00:b0:8080::1/64"
+			}
+		]
+	}
+}

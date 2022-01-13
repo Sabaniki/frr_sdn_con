@@ -77,7 +77,6 @@ func GetRouteMap(routeMap string) {
 	fmt.Println(res)
 }
 
-// func SetMed(routeMap string, sequenceNumber int32, permitDeny string, med int32) {
 func SetMed(pathToConfig string) {
 	var conf pb.SetMedRequest
 	raw, err := ioutil.ReadFile(pathToConfig)
@@ -118,6 +117,54 @@ func SetMed(pathToConfig string) {
 	// setMedRequest := pb.SetMedRequest{RouteMap: routeMap, SequenceNumber: sequenceNumber, Type: permitDeny, Med: med}
 
 	res, err := client.SetMed(ctx, &conf)
+
+	if err != nil {
+		return
+	}
+
+	fmt.Println(res)
+}
+
+func ConfigInterface(pathToConfig string) {
+	var conf pb.ConfigInterfaceRequest
+	raw, err := ioutil.ReadFile(pathToConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+	print(string(raw))
+	err = json.Unmarshal(raw, &conf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	address := "[::1]:50051"
+	conn, err := grpc.Dial(
+		address,
+
+		grpc.WithInsecure(),
+		grpc.WithBlock(),
+		grpc.WithKeepaliveParams(keepalive.ClientParameters{
+			Time:                3 * time.Second,
+			Timeout:             3 * time.Second,
+			PermitWithoutStream: true,
+		}),
+	)
+	if err != nil {
+		log.Fatal("Connection failed.")
+		return
+	}
+	defer conn.Close()
+
+	ctx, cancel := context.WithTimeout(
+		context.Background(),
+		3*time.Second,
+	)
+	defer cancel()
+
+	client := pb.NewInterfaceServiceClient(conn)
+
+	// setMedRequest := pb.SetMedRequest{RouteMap: routeMap, SequenceNumber: sequenceNumber, Type: permitDeny, Med: med}
+
+	res, err := client.ConfigInterface(ctx, &conf)
 
 	if err != nil {
 		return
