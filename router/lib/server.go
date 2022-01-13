@@ -127,6 +127,22 @@ func (r *Router) ShowAllInterface(ctx context.Context, req *pb.ShowAllInterfaceR
 }
 
 func (r *Router) ConfigInterface(ctx context.Context, req *pb.ConfigInterfaceRequest) (*pb.ConfigInterfaceResult, error) {
-	// TODO: impl
-	return nil, nil
+	var old pb.InterfaceInfo
+	err := execShowCommand(&old, "interface "+req.GetName(), "."+req.GetName(), ".evpnMh = \"no\"")
+	if err != nil {
+		println("error occurred!")
+		return nil, err
+	}
+	for _, addr := range req.GetConfig().IpAddresses {
+		err = execCommand(
+			"interface  "+" "+req.GetName(),
+			"ipv6 address "+addr.GetAddress(),
+		)
+	}
+
+	var current pb.InterfaceInfo
+	err = execShowCommand(&current, "interface "+req.GetName(), "."+req.GetName(), ".evpnMh = \"no\"")
+
+	res := pb.ConfigInterfaceResult{OldConfig: &old, CurrentConfig: &current}
+	return &res, err
 }

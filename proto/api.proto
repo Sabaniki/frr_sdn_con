@@ -105,7 +105,8 @@ message ShowOneInterfaceResult {
 }
 
 message ConfigInterfaceRequest {
-    InterfaceInfo req = 1;
+    string name = 1;
+    InterfaceInfo config = 2;
 }
 
 message ConfigInterfaceResult {
