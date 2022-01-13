@@ -22,7 +22,7 @@ func main() {
 	rt := router.Router{}
 	pb.RegisterShowBgpIpv6SummaryServiceServer(server, &rt)
 	pb.RegisterRouteMapServiceServer(server, &rt)
-
+	pb.RegisterInterfaceServiceServer(server, &rt)
 	reflection.Register(server)
 	server.Serve(listenport)
 }

@@ -22,6 +22,7 @@ func execShowCommand(obj interface{}, vtyshArg string, jqArgs ...string) error {
 		builtArg := append([]string{"jq"}, jqArg)
 		commands = append(commands, builtArg)
 	}
+	fmt.Println(commands)
 	res, cmd_err := pipeline.Output(commands...)
 	if cmd_err != nil {
 		fmt.Println(cmd_err)
@@ -90,7 +91,7 @@ func getMed(req *pb.SetMedRequest) (int32, error) {
 func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedResult, error) {
 	oldMed, err := getMed(req)
 	if err != nil {
-		println("error occured!")
+		println("error occurred!")
 		return nil, err
 	}
 	var obj pb.SetMedResult
@@ -99,12 +100,12 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 		"set metric "+strconv.Itoa(int(req.Med)),
 	)
 	if err != nil {
-		println("error occured!")
+		println("error occurred!")
 		return nil, err
 	}
 	currentMed, err := getMed(req)
 	if err != nil {
-		println("error occured!")
+		println("error occurred!")
 		return nil, err
 	}
 	obj.OldMed = oldMed
@@ -115,5 +116,17 @@ func (r *Router) SetMed(ctx context.Context, req *pb.SetMedRequest) (*pb.SetMedR
 func (r *Router) ShowOneInterface(ctx context.Context, req *pb.ShowOneInterfaceRequest) (*pb.ShowOneInterfaceResult, error) {
 	var obj pb.ShowOneInterfaceResult
 	err := execShowCommand(&obj, "interface", "."+req.GetName())
+	println("requested!: ")
+	fmt.Println(&obj)
 	return &obj, err
+}
+
+func (r *Router) ShowAllInterface(ctx context.Context, req *pb.ShowAllInterfaceRequest) (*pb.ShowAllInterfaceResult, error) {
+	// TODO: impl
+	return nil, nil
+}
+
+func (r *Router) ConfigInterface(ctx context.Context, req *pb.ConfigInterfaceRequest) (*pb.ConfigInterfaceResult, error) {
+	// TODO: impl
+	return nil, nil
 }
