@@ -131,7 +131,7 @@ message InterfaceInfo {
     string interfaceType = 16;
     string interfaceSlaveType = 17;
     bool lacpBypass = 18;
-    bytes evpnMh = 19;  // わからないのでとりあえず bytes に
+    // bytes evpnMh = 19;  // わからないのでとりあえず bytes に
     string protodown = 20;
 }
 
